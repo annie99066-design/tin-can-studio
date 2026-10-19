@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIN CAN STUDIO — 插畫靈感馬口鐵盒</title>
+    <style>
+        /* ==========================================
+           1. 全域變數與 Reset
+           ========================================== */
+        :root {
+            --bg-deep-blue: #1b2838;
+            --grid-line-white: rgba(255, 255, 255, 0.28);
+            --kraft-paper: #d9b382;
+            --kraft-dark: #cfa876;
+            --ink-blue: #1d2b3a;
+            --tin-red: #d62828;
+            --tin-gold: #e5a93c;
+            --tin-cream: #fff8e7;
+            --tin-darkred: #8b0000;
+            --text-dark: #33261d;
+            --text-muted: #6e6259;
+            --shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            --font-main: "PingFang TC", "Microsoft JhengHei", "Heiti TC", sans-serif;
+            --font-serif: "Songti TC", "Noto Serif CJK TC", serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            /* 復古深藍色桌面與手繪感粗線條的大格白色方格紋 */
+            background-color: var(--bg-deep-blue);
+            background-image: 
+                linear-gradient(var(--grid-line-white) 3px, transparent 3px),
+                linear-gradient(90deg, var(--grid-line-white) 3px, transparent 3px);
+            background-size: 70px 70px;
+            background-position: -1px -1px;
+            color: var(--text-dark);
+            font-family: var(--font-main);
+            min-height: 100vh;
+            padding: 2rem 1rem 4rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        /* 標題區 */
+        header {
+            text-align: center;
+            padding: 1rem 1.5rem;
+            background: rgba(255, 248, 231, 0.92);
+            border: 3px double #d62828;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 2.8rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            color: var(--tin-darkred);
+            text-shadow: 2px 2px 0px var(--tin-gold);
+            margin-bottom: 0.2rem;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: #2b2d42;
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        /* 主互動區：大型置中昭和馬口鐵盒 */
+        .stage-area {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.8rem;
+            position: relative;
+        }
+
+        .shake-hint {
+            font-size: 1rem;
+            color: #fff8e7;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.4rem 1.2rem;
+            border-radius: 20px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(-4px); }
+        }
+
+        .tin-can-wrapper {
+            width: 380px;
+            height: 260px;
+            position: relative;
+            cursor: grab;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        .tin-can-wrapper:active {
+            cursor: grabbing;
+        }
+
+        .tin-body {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #e63946 0%, #a80d0d 100%);
+            border-radius: 28px;
+            border: 6px solid #e5a93c;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.6), 0 15px 35px rgba(0,0,0,0.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 盒蓋 (上浮金屬邊框 + 點線面邊框) */
+        .tin-lid {
+            width: 104%;
+            height: 104%;
+            background: radial-gradient(circle, #e63946 10%, #8b0000 90%);
+            border-radius: 30px;
+            border: 8px solid var(--tin-cream);
+            box-shadow: 
+                0 0 0 5px #e5a93c,
+                inset 3px 3px 6px rgba(255,255,255,0.7),
+                inset -3px -3px 6px rgba(0,0,0,0.6),
+                0 15px 30px rgba(0,0,0,0.5);
+            position: absolute;
+            top: -2%;
+            left: -2%;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: top center;
+            padding: 10px;
+        }
+
+        /* 點線面純幾何復古花紋裝飾框 (去除小花與茶杯) */
+        .geometric-border {
+            width: 90%;
+            height: 85%;
+            border: 2px dashed var(--tin-cream);
+            outline: 2px solid var(--tin-gold);
+            outline-offset: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .dot-corner {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--tin-cream);
+            background: var(--tin-gold);
+        }
+        .dc-tl { top: -6px; left: -6px; }
+        .dc-tr { top: -6px; right: -6px; }
+        .dc-bl { bottom: -6px; left: -6px; }
+        .dc-br { bottom: -6px; right: -6px; }
+
+        .lid-text-main {
+            font-size: 2.3rem;
+            font-weight: 900;
+            color: var(--tin-cream);
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 0px #5c0000;
+            line-height: 1;
+        }
+
+        .lid-text-sub {
+            font-size: 1.15rem;
+            font-weight: bold;
+            color: var(--tin-gold);
+            font-style: italic;
+            margin-top: 6px;
+            text-shadow: 1px 1px 0px #000;
+        }
+
+        /* 開盒蓋動畫修飾：呈現蓋子斜向錯開放置於盒子上的效果 */
+        .tin-can-wrapper.open .tin-lid {
+            transform: translate3d(28px, -45px, 20px) rotate(16deg) rotateX(15deg);
+            box-shadow: 
+                0 0 0 4px #e5a93c,
+                12px 18px 25px rgba(0,0,0,0.5);
+            z-index: 15;
+        }
+
+        .shaking {
+            animation: shakeAnim 0.15s infinite alternate ease-in-out;
+        }
+
+        @keyframes shakeAnim {
+            0% { transform: rotate(-8deg) translateX(-10px); }
+            100% { transform: rotate(8deg) translateX(10px); }
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #e5a93c 0%, #b87d14 100%);
+            color: #33261d;
+            border: 3px solid #fff8e7;
+            padding: 0.9rem 2.5rem;
+            font-size: 1.15rem;
+            font-weight: 900;
+            border-radius: 35px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            transition: all 0.2s;
+            letter-spacing: 2px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, #f3b94c 0%, #c88a1c 100%);
+        }
+
+        .action-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* 結果區 */
+        .results-section {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .results-section.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .results-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2.2rem;
+            width: 100%;
+            max-width: 1000px;
+            padding: 1.5rem;
+        }
+
+        /* 素材紙襯底：直角無圓角 */
+        .card-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: stickerPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
+        }
+
+        @keyframes stickerPop {
+            0% { opacity: 0; transform: scale(0.6) translateY(40px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .fabric-backing {
+            position: absolute;
+            inset: -12px -16px;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.85;
+            border-radius: 0px !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+        }
+
+        .backing-lace {
+            background-color: #fffef7;
+            border: 2px dashed #d1c5b4;
+            background-image: radial-gradient(#e2d5c3 1.5px, transparent 1.5px);
+            background-size: 8px 8px;
+        }
+
+        .backing-plaid {
+            background-color: #e8dbce;
+            background-image: 
+                linear-gradient(90deg, rgba(139,0,0,0.15) 50%, transparent 50%),
+                linear-gradient(rgba(139,0,0,0.15) 50%, transparent 50%);
+            background-size: 16px 16px;
+            border: 1px solid #c4b3a3;
+        }
+
+        /* 貼紙主體 - 沿邊裁切 */
+        .result-sticker {
+            position: relative;
+            z-index: 2;
+            background: #ffffff;
+            border: 5px solid #ffffff;
+            border-radius: 12px;
+            box-shadow: 
+                0 0 0 1px rgba(0,0,0,0.12),
+                0 8px 20px rgba(0,0,0,0.3);
+            padding: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+
+        .result-sticker:hover {
+            transform: scale(1.06) rotate(0deg) !important;
+            z-index: 10;
+        }
+
+        .sticker-format {
+            width: 170px;
+            min-height: 200px;
+            background: #faf8f5;
+        }
+
+        .format-preview-container {
+            width: 100%;
+            height: 125px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ede6d8;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 0.6rem;
+        }
+
+        /* 美式橫線筆記本圖示 */
+        .fmt-notebook {
+            width: 100px;
+            height: 110px;
+            background: #fff;
+            border: 1px solid #d0c2b0;
+            border-top: 14px solid #f4a261;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            background-image: linear-gradient(to bottom, transparent 11px, #4895ef 12px);
+            background-size: 100% 12px;
+            position: relative;
+        }
+        .fmt-notebook::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 0;
+            bottom: 0;
+            width: 1.5px;
+            background: #e63946;
+        }
+
+        .fmt-polaroid { width: 85px; height: 105px; background: #fff; border: 1px solid #ddd; padding: 6px 6px 20px 6px; box-shadow: 0 3px 6px rgba(0,0,0,0.15); }
+        .fmt-polaroid-inner { width: 100%; height: 100%; background: #b8c0c2; }
+        .fmt-photocard { width: 75px; height: 110px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%); border-radius: 10px; border: 3px solid #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+        .fmt-postcard { width: 120px; height: 85px; background: #fff; border: 1px solid #ccc; padding: 6px; position: relative; }
+        .fmt-postcard::after { content: 'STAMP'; position: absolute; right: 8px; top: 8px; width: 18px; height: 22px; border: 1px dashed #999; font-size: 6px; color: #999; text-align: center; line-height: 22px; }
+        .fmt-wallpaper { width: 60px; height: 110px; background: #1a1a1a; border-radius: 12px; border: 3px solid #333; padding: 4px; }
+        .fmt-wallpaper-screen { width: 100%; height: 100%; background: linear-gradient(to bottom, #a1c4fd 0%, #c2e9fb 100%); border-radius: 8px; }
+        .fmt-bookmark { width: 42px; height: 115px; background: #588157; border-radius: 6px 6px 0 0; border: 1px solid #3a5a40; position: relative; }
+        .fmt-bookmark::before { content: '●'; position: absolute; top: 6px; left: 16px; color: #fff; font-size: 8px; }
+        .fmt-sticker-sheet { width: 95px; height: 110px; background: #fff; border: 2px dashed #b5a895; border-radius: 6px; display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; }
+        .fmt-sticker-dot { width: 22px; height: 22px; background: #f4a261; border-radius: 50%; }
+        .fmt-poster { width: 85px; height: 115px; background: #2b2d42; border: 3px solid #fff; padding: 4px; color: #fff; text-align: center; font-size: 8px; }
+        .fmt-ticket { width: 125px; height: 60px; background: #e07a5f; border-radius: 6px; border-left: 6px dotted #fff; }
+
+        .format-title-text {
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: var(--text-dark);
+        }
+
+        .sticker-color {
+            width: 240px;
+            background: #fff;
+        }
+
+        .color-bar-631 {
+            width: 100%;
+            height: 80px;
+            display: grid;
+            grid-template-columns: 6fr 3fr 1fr;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+            margin-bottom: 0.6rem;
+        }
+
+        .color-block { height: 100%; }
+        .color-meta { width: 100%; text-align: center; }
+        .color-name { font-size: 1rem; font-weight: 900; color: var(--text-dark); margin-bottom: 2px; }
+        .color-hexes { font-size: 0.72rem; font-family: monospace; color: var(--text-muted); background: #f4efe6; padding: 3px 6px; border-radius: 4px; }
+
+        .sticker-scene {
+            width: 240px;
+            background: #fdfbf7;
+            border: 2px solid #8b0000;
+            border-radius: 6px;
+            padding: 1rem;
+            position: relative;
+        }
+
+        .sticker-scene::before {
+            content: '';
+            position: absolute;
+            inset: 4px;
+            border: 1px dashed #e5a93c;
+            pointer-events: none;
+        }
+
+        .scene-text-content {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #5c0000;
+            line-height: 1.5;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .sticker-emoji { min-width: 140px; background: #ffffff; }
+        .emoji-large { font-size: 3.8rem; line-height: 1; padding: 0.4rem; filter: drop-shadow(0 4px 4px rgba(0,0,0,0.15)); }
+
+        .sticker-kaomoji { min-width: 170px; background: #f2f7f4; border: 2px dashed #588157; }
+        .kaomoji-text { font-size: 1.35rem; font-weight: 900; color: #2b4c3b; padding: 0.6rem 1rem; white-space: nowrap; }
+
+        /* 欄位設定區：最下方、牛皮紙、墨藍字、無圓角、無描邊 */
+        .settings-section {
+            width: 100%;
+            max-width: 950px;
+            background: var(--kraft-paper);
+            color: var(--ink-blue);
+            border-radius: 0px;
+            border: none;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--ink-blue);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .settings-title {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--ink-blue);
+        }
+
+        .field-badge {
+            font-size: 0.9rem;
+            background: var(--ink-blue);
+            color: #fff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 0px;
+            font-weight: bold;
+        }
+
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .field-card {
+            background: var(--kraft-dark);
+            border-radius: 0px;
+            border: none;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            color: var(--ink-blue);
+        }
+
+        .field-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .field-label-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .field-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--ink-blue);
+            cursor: pointer;
+        }
+
+        .tag-req { font-size: 0.72rem; color: #fff; background: var(--tin-darkred); padding: 2px 6px; border-radius: 0px; }
+        .tag-opt { font-size: 0.72rem; color: var(--ink-blue); border: 1px solid var(--ink-blue); padding: 1px 5px; border-radius: 0px; }
+
+        .btn-view-default {
+            font-size: 0.8rem;
+            background: var(--ink-blue);
+            color: #fff;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 0px;
+            cursor: pointer;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+
+        .mode-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.4rem;
+            border-top: 1px dashed var(--ink-blue);
+            padding-top: 0.6rem;
+        }
+
+        .mode-switch {
+            display: flex;
+            gap: 0.8rem;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .mode-switch label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        textarea.custom-textarea {
+            width: 100%;
+            height: 65px;
+            font-size: 0.85rem;
+            padding: 0.5rem;
+            background: #fff;
+            color: #000;
+            border: 1px solid var(--ink-blue);
+            border-radius: 0px;
+            resize: vertical;
+            font-family: inherit;
+            user-select: text;
+        }
+
+        /* Modal 彈窗 */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: var(--kraft-paper);
+            color: var(--ink-blue);
+            border-radius: 0px;
+            padding: 1.8rem;
+            max-width: 480px;
+            width: 90%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: var(--ink-blue);
+            border-bottom: 2px solid var(--ink-blue);
+            padding-bottom: 0.4rem;
+        }
+
+        .modal-content-list {
+            overflow-y: auto;
+            max-height: 320px;
+            background: #fff;
+            border: 1px solid var(--ink-blue);
+            border-radius: 0px;
+            padding: 0.8rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #111;
+            user-select: text;
+        }
+
+        .modal-close-btn {
+            align-self: flex-end;
+            background: var(--ink-blue);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1.4rem;
+            border-radius: 0px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--tin-darkred);
+            color: #fff;
+            padding: 0.8rem 1.8rem;
+            border-radius: 0px;
+            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 1. 頁頭區 -->
+    <header>
+        <div class="logo">TIN CAN STUDIO</div>
+        <div class="subtitle">插畫靈感馬口鐵盒</div>
+    </header>
+
+    <!-- 2. 主互動區：大型置中昭和馬口鐵盒 -->
+    <div class="stage-area">
+        <div class="shake-hint">← 按住鐵盒左右搖晃開盒，或點擊下方按鈕 →</div>
+        
+        <div class="tin-can-wrapper" id="tinCan">
+            <div class="tin-body"></div>
+            <div class="tin-lid">
+                <div class="geometric-border">
+                    <div class="dot-corner dc-tl"></div>
+                    <div class="dot-corner dc-tr"></div>
+                    <div class="dot-corner dc-bl"></div>
+                    <div class="dot-corner dc-br"></div>
+                    <div class="lid-text-main">SUPRISE</div>
+                    <div class="lid-text-sub">for you</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="action-btn" id="btnShake">搖一搖抽靈感</button>
+    </div>
+
+    <!-- 3. 結果區 -->
+    <div class="results-section" id="resultsSection">
+        <div class="results-grid" id="resultsGrid"></div>
+        <button class="action-btn" id="btnReshake" style="background: linear-gradient(135deg, #d62828 0%, #8b0000 100%); color:#fff;">
+            重新搖一盒靈感
+        </button>
+    </div>
+
+    <!-- 4. 欄位設定區 -->
+    <div class="settings-section">
+        <div class="settings-header">
+            <div class="settings-title">⚙ 抽取欄位與清單設定</div>
+            <div class="field-badge" id="fieldCountTag">目前已選 6／6 欄</div>
+        </div>
+
+        <div class="fields-grid" id="fieldsGridContainer"></div>
+    </div>
+</div>
+
+<!-- Modal 預設清單 -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-title" id="modalTitle">預設候選清單</div>
+        <div class="modal-content-list" id="modalContentList"></div>
+        <button class="modal-close-btn" onclick="closeDefaultModal()">關閉</button>
+    </div>
+</div>
+
+<!-- Toast 提示 -->
+<div class="toast" id="toastMsg">請至少選擇 1 個選填欄位！</div>
+
+<script>
+/* ==========================================
+   預設資料庫
+   ========================================== */
+const DEFAULT_DATA = {
+    format: [
+        { id: 'polaroid', name: '拍立得', render: () => '<div class="fmt-polaroid"><div class="fmt-polaroid-inner"></div></div>' },
+        { id: 'photocard', name: '小卡', render: () => '<div class="fmt-photocard"></div>' },
+        { id: 'postcard', name: '明信片', render: () => '<div class="fmt-postcard"></div>' },
+        { id: 'wallpaper', name: '手機壁紙', render: () => '<div class="fmt-wallpaper"><div class="fmt-wallpaper-screen"></div></div>' },
+        { id: 'doodle', name: '筆記本塗鴉', render: () => '<div class="fmt-notebook"></div>' },
+        { id: 'bookmark', name: '書籤', render: () => '<div class="fmt-bookmark"></div>' },
+        { id: 'sticker-sheet', name: '貼紙頁', render: () => '<div class="fmt-sticker-sheet"><div class="fmt-sticker-dot"></div><div class="fmt-sticker-dot" style="background:#2a9d8f;"></div><div class="fmt-sticker-dot" style="background:#e76f51;"></div></div>' },
+        { id: 'poster', name: '迷你海報', render: () => '<div class="fmt-poster"><div style="height:65%;background:#e9c46a;margin-bottom:4px;"></div>POSTER</div>' },
+        { id: 'ticket', name: '票券', render: () => '<div class="fmt-ticket"></div>' }
+    ],
+    color: [
+        { name: "昭和喫茶店", hex: ["#C84B31", "#ECB365", "#042940"] },
+        { name: "莫蘭迪優雅", hex: ["#7A8B99", "#A9B7C6", "#E8D8CE"] },
+        { name: "馬卡龍甜心", hex: ["#FFB7B2", "#FFDAC1", "#E2F0CB"] },
+        { name: "奶油法式", hex: ["#F4EAD5", "#DDAF94", "#4F5D75"] },
+        { name: "北歐極簡", hex: ["#2B2D42", "#8D99AE", "#EF233C"] },
+        { name: "City Pop 80s", hex: ["#1D3557", "#457B9D", "#E63946"] },
+        { name: "浮世繪經典", hex: ["#2C5D63", "#A8C3A8", "#D96B27"] },
+        { name: "美式復古 Arcade", hex: ["#2B1B17", "#D4A373", "#FAEDCD"] },
+        { name: "賽博龐克", hex: ["#0F051D", "#591242", "#00F0FF"] },
+        { name: "Acid Graphics", hex: ["#111111", "#CCFF00", "#FF007F"] }
+    ],
+    scene: [
+        "下雨天的公車站牌", "深夜便利商店", "長滿植物的陽台", "午後陽光照進的房間",
+        "堆滿書本的書桌", "洗衣店裡轉動的滾筒", "巷口的自動販賣機", "放學後的空教室",
+        "凌晨還亮著燈的廚房", "老公寓的樓梯轉角", "有風的天台曬衣場", "清晨的早餐店",
+        "雨停後的巷弄積水", "最後一班公車的車窗旁", "黃昏的河堤步道", "沒有客人的老咖啡店"
+    ],
+    emoji1: ["🌧️", "☕", "🐱", "🌱", "🍞", "📻", "🌙", "👟", "🎨", "🚲", "🛋️", "🎧"],
+    emoji2: ["✨", "🎀", "🔑", "🍵", "🕯️", "💌", "🍰", "🪴", "📮", "🧸", "☂️", "📷"],
+    kaomoji: ["(T-T)", "(˶˃ ᵕ ˂˶)", "(¬_¬)", "(╥﹏╥)", "(・ω・)", "(ง •̀_•́)ง", "(´｡• ᵕ •｡`)", "(￣▽￣)", "(｡•̀ᴗ-)✧", "(っ˘ω˘ς)"]
+};
+
+/* 所有 6 個欄位狀態配置 */
+const fieldsConfig = {
+    format: { label: '規格形式', required: true, selected: true, mode: 'default', custom: '' },
+    color: { label: '推薦色卡', required: true, selected: true, mode: 'default', custom: '' },
+    scene: { label: '場景', required: false, selected: true, mode: 'default', custom: '' },
+    emoji1: { label: 'Emoji-1', required: false, selected: true, mode: 'default', custom: '' },
+    emoji2: { label: 'Emoji-2', required: false, selected: true, mode: 'default', custom: '' },
+    kaomoji: { label: '表情', required: false, selected: true, mode: 'default', custom: '' }
+};
+
+let lastResults = {};
+let isAnimating = false;
+
+/* DOM 初始化 */
+document.addEventListener('DOMContentLoaded', () => {
+    renderFieldsSettingUI();
+    bindEvents();
+});
+
+function renderFieldsSettingUI() {
+    const container = document.getElementById('fieldsGridContainer');
+    container.innerHTML = '';
+    let selectedCount = 0;
+
+    Object.keys(fieldsConfig).forEach(key => {
+        const item = fieldsConfig[key];
+        if (item.selected) selectedCount++;
+
+        const card = document.createElement('div');
+        card.className = 'field-card';
+
+        card.innerHTML = `
+            <div class="field-card-top">
+                <div class="field-label-group">
+                    <input type="checkbox" class="field-checkbox" ${item.required ? 'disabled checked' : (item.selected ? 'checked' : '')} 
+                        onchange="toggleFieldSelected('${key}', this.checked)">
+                    <span>${item.label}</span>
+                </div>
+                <span class="${item.required ? 'tag-req' : 'tag-opt'}">${item.required ? '必選' : '選填'}</span>
+            </div>
+            <button class="btn-view-default" onclick="openDefaultModal('${key}')">👁 檢視預設清單</button>
+            ${item.selected ? `
+                <div class="mode-container">
+                    <div class="mode-switch">
+                        <label><input type="radio" name="mode_${key}" value="default" ${item.mode === 'default' ? 'checked' : ''} onchange="changeFieldMode('${key}', 'default')"> 預設</label>
+                        <label><input type="radio" name="mode_${key}" value="custom" ${item.mode === 'custom' ? 'checked' : ''} onchange="changeFieldMode('${key}', 'custom')"> 自訂</label>
+                    </div>
+                    ${item.mode === 'custom' ? `
+                        <textarea class="custom-textarea" placeholder="請輸入自訂內容..." onchange="updateCustomText('${key}', this.value)">${item.custom}</textarea>
+                    ` : ''}
+                </div>
+            ` : ''}
+        `;
+        container.appendChild(card);
+    });
+
+    document.getElementById('fieldCountTag').textContent = `目前已選 ${selectedCount}／6 欄`;
+}
+
+function toggleFieldSelected(key, checked) {
+    fieldsConfig[key].selected = checked;
+    renderFieldsSettingUI();
+}
+
+function changeFieldMode(key, mode) {
+    fieldsConfig[key].mode = mode;
+    if (mode === 'custom' && !fieldsConfig[key].custom) {
+        const def = DEFAULT_DATA[key];
+        if (Array.isArray(def)) {
+            fieldsConfig[key].custom = typeof def[0] === 'object' ? JSON.stringify(def, null, 2) : def.join('\n');
+        }
+    }
+    renderFieldsSettingUI();
+}
+
+function updateCustomText(key, text) {
+    fieldsConfig[key].custom = text;
+}
+
+/* 檢視預設清單 Modal */
+function openDefaultModal(key) {
+    const modal = document.getElementById('modalOverlay');
+    const title = document.getElementById('modalTitle');
+    const list = document.getElementById('modalContentList');
+
+    title.textContent = `預設清單：${fieldsConfig[key].label}`;
+    list.innerHTML = '';
+
+    const data = DEFAULT_DATA[key];
+    if (key === 'format') {
+        data.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = `• ${item.name}`;
+            list.appendChild(div);
+        });
+    } else if (key === 'color') {
+        data.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = `• ${item.name} (${item.hex.join(', ')})`;
+            list.appendChild(div);
+        });
+    } else {
+        list.textContent = data.join('\n');
+    }
+
+    modal.classList.add('open');
+}
+
+function closeDefaultModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function showToast(msg) {
+    const toast = document.getElementById('toastMsg');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 2200);
+}
+
+/* 抽樣邏輯 (Fair Draw + 防重複) */
+function getCandidates(key) {
+    const cfg = fieldsConfig[key];
+    if (cfg.mode === 'default') return DEFAULT_DATA[key];
+
+    if (!cfg.custom.trim()) return [];
+    if (key === 'format' || key === 'color') {
+        try { return JSON.parse(cfg.custom); } catch(e) { return DEFAULT_DATA[key]; }
+    }
+    return cfg.custom.split(/[\n,，]+/).map(s => s.trim()).filter(Boolean);
+}
+
+function pickRandomSingle(key) {
+    const pool = getCandidates(key);
+    if (!pool || pool.length === 0) return null;
+
+    const last = lastResults[key];
+    let candidates = pool;
+    if (pool.length > 1 && last) {
+        candidates = pool.filter(item => JSON.stringify(item) !== JSON.stringify(last));
+    }
+
+    const picked = candidates[Math.floor(Math.random() * candidates.length)];
+    lastResults[key] = picked;
+    return picked;
+}
+
+/* 搖盒與抽取動畫管理 */
+const tinCan = document.getElementById('tinCan');
+const btnShake = document.getElementById('btnShake');
+const btnReshake = document.getElementById('btnReshake');
+const resultsSection = document.getElementById('resultsSection');
+const resultsGrid = document.getElementById('resultsGrid');
+
+function bindEvents() {
+    btnShake.addEventListener('click', () => startLotteryProcess());
+    btnReshake.addEventListener('click', () => startLotteryProcess());
+
+    let isDragging = false;
+    let startX = 0;
+    let totalDist = 0;
+
+    tinCan.addEventListener('pointerdown', (e) => {
+        if (isAnimating) return;
+        isDragging = true;
+        startX = e.clientX;
+        totalDist = 0;
+    });
+
+    window.addEventListener('pointermove', (e) => {
+        if (!isDragging) return;
+        const delta = e.clientX - startX;
+        totalDist += Math.abs(delta);
+        tinCan.style.transform = `translateX(${delta * 0.3}px) rotate(${delta * 0.1}deg)`;
+    });
+
+    window.addEventListener('pointerup', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        tinCan.style.transform = 'none';
+
+        if (totalDist > 120) {
+            startLotteryProcess();
+        }
+    });
+}
+
+function startLotteryProcess() {
+    if (isAnimating) return;
+
+    const activeOpts = Object.keys(fieldsConfig).filter(k => !fieldsConfig[k].required && fieldsConfig[k].selected);
+    if (activeOpts.length === 0) {
+        showToast("請至少選擇 1 個選填欄位！");
+        return;
+    }
+
+    isAnimating = true;
+    btnShake.disabled = true;
+
+    // STEP 1: 第一次結果消失 -> 蓋上盒蓋
+    resultsSection.classList.remove('show');
+    tinCan.classList.remove('open');
+
+    setTimeout(() => {
+        resultsGrid.innerHTML = '';
+        
+        // STEP 2: 進入搖晃互動
+        tinCan.classList.add('shaking');
+
+        setTimeout(() => {
+            // STEP 3: 停止搖晃 -> 開盒錯開擺放
+            tinCan.classList.remove('shaking');
+            tinCan.classList.add('open');
+
+            setTimeout(() => {
+                // STEP 4: 給出第二次結果
+                renderAllStickers();
+                resultsSection.classList.add('show');
+                isAnimating = false;
+                btnShake.disabled = false;
+            }, 500);
+        }, 1000);
+    }, 400);
+}
+
+function renderAllStickers() {
+    resultsGrid.innerHTML = '';
+
+    Object.keys(fieldsConfig).forEach(key => {
+        if (!fieldsConfig[key].selected) return;
+
+        const val = pickRandomSingle(key);
+        if (!val) return;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'card-wrapper';
+        wrapper.style.transform = `rotate(${(Math.random() * 10 - 5).toFixed(1)}deg)`;
+
+        const fabric = document.createElement('div');
+        fabric.className = `fabric-backing ${Math.random() > 0.5 ? 'backing-lace' : 'backing-plaid'}`;
+        wrapper.appendChild(fabric);
+
+        const sticker = document.createElement('div');
+        sticker.className = 'result-sticker';
+
+        if (key === 'format') {
+            sticker.classList.add('sticker-format');
+            sticker.innerHTML = `
+                <div class="format-preview-container">${val.render ? val.render() : ''}</div>
+                <div class="format-title-text">${val.name}</div>
+            `;
+        } else if (key === 'color') {
+            sticker.classList.add('sticker-color');
+            sticker.innerHTML = `
+                <div class="color-bar-631">
+                    <div class="color-block" style="background:${val.hex[0]}"></div>
+                    <div class="color-block" style="background:${val.hex[1]}"></div>
+                    <div class="color-block" style="background:${val.hex[2]}"></div>
+                </div>
+                <div class="color-meta">
+                    <div class="color-name">${val.name}</div>
+                    <div class="color-hexes">${val.hex.join('  ')}</div>
+                </div>
+            `;
+        } else if (key === 'scene') {
+            sticker.classList.add('sticker-scene');
+            sticker.innerHTML = `<div class="scene-text-content">${val}</div>`;
+        } else if (key === 'emoji1' || key === 'emoji2') {
+            sticker.classList.add('sticker-emoji');
+            sticker.innerHTML = `<div class="emoji-large">${val}</div>`;
+        } else if (key === 'kaomoji') {
+            sticker.classList.add('sticker-kaomoji');
+            sticker.innerHTML = `<div class="kaomoji-text">${val}</div>`;
+        }
+
+        wrapper.appendChild(sticker);
+        resultsGrid.appendChild(wrapper);
+    });
+}
+</script>
+</body>
+</html>
